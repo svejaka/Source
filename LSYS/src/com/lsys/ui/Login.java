@@ -97,7 +97,7 @@ public class Login extends javax.swing.JFrame {
         String dbPass = null;
 
         try {
-            String query = "SELECT * FROM employees WHERE username=? AND password=?";
+            String query = "SELECT * FROM app.employees WHERE username=? AND password=?";
             PreparedStatement pst = conn.prepareStatement(query);
             pst.setString(1, username);
             pst.setString(2, password);
@@ -112,10 +112,10 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
 
-        if (dbUser.equals(username) && dbPass.equals(password)) {
+        if ((dbUser == null ? username == null : dbUser.equals(username)) && (dbPass == null ? password == null : dbPass.equals(password))) {
             JOptionPane.showMessageDialog(null, "Wellcome");
         } else {
-            JOptionPane.showMessageDialog(null, "Ooops...");
+            JOptionPane.showMessageDialog(null, "Wrong username or password");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
