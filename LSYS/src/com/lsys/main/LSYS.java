@@ -12,7 +12,7 @@ public class LSYS {
     public static void main(String[] args) throws SQLException, Exception {
         java.awt.EventQueue.invokeLater(() -> {
             try {
-                new Login().setVisible(true);
+                new scLogin().setVisible(true);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Login broken !");
             }

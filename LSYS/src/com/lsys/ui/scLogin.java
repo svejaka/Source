@@ -2,17 +2,19 @@ package com.lsys.ui;
 
 import com.lsys.db.*;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
  *
  * @author Konstantin
  */
-public class Login extends javax.swing.JFrame {
+public class scLogin extends javax.swing.JFrame {
 
     Connection conn = null;
 
-    public Login() throws Exception {
+    public scLogin() throws Exception {
         initComponents();
         conn = DBConnect.createConnection();
     }
@@ -114,6 +116,13 @@ public class Login extends javax.swing.JFrame {
 
         if ((dbUser == null ? username == null : dbUser.equals(username)) && (dbPass == null ? password == null : dbPass.equals(password))) {
             JOptionPane.showMessageDialog(null, "Wellcome");
+            try {
+                conn.close();
+                this.dispose();
+                JOptionPane.showMessageDialog(null, "DB connection closed");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Cannot close DB connection");
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Wrong username or password");
         }
