@@ -2,8 +2,6 @@ package com.lsys.ui;
 
 import com.lsys.db.*;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -100,28 +98,33 @@ public class scLogin extends javax.swing.JFrame {
 
         try {
             String query = "SELECT * FROM app.employees WHERE username=? AND password=?";
-            PreparedStatement pst = conn.prepareStatement(query);
-            pst.setString(1, username);
-            pst.setString(2, password);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                dbUser = rs.getString(2);
-                dbPass = rs.getString(3);
+            try (PreparedStatement pst = conn.prepareStatement(query)) {
+                pst.setString(1, username);
+                pst.setString(2, password);
+                try (ResultSet rs = pst.executeQuery()) {
+                    while (rs.next()) {
+                        dbUser = rs.getString(2);
+                        dbPass = rs.getString(3);
+                    }
+                }
             }
-            rs.close();
-            pst.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
 
         if ((dbUser == null ? username == null : dbUser.equals(username)) && (dbPass == null ? password == null : dbPass.equals(password))) {
-            JOptionPane.showMessageDialog(null, "Wellcome");
+            scLogin.super.dispose();
+            java.awt.EventQueue.invokeLater(() -> {
+                try {
+                    new scMain().setVisible(true);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+            });
             try {
                 conn.close();
-                this.dispose();
-                JOptionPane.showMessageDialog(null, "DB connection closed");
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Cannot close DB connection");
+                JOptionPane.showMessageDialog(null, ex);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Wrong username or password");

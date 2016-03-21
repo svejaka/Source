@@ -14,7 +14,7 @@ public class LSYS {
             try {
                 new scLogin().setVisible(true);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Login broken !");
+                JOptionPane.showMessageDialog(null, ex);
             }
         });
     }
